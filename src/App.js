@@ -70,7 +70,7 @@ const InvitationForm = () => {
             🥞 On garde les crêpes au chaud pour vous !
           </div>
           <p className="text-xs text-gray-400 mt-4">
-            On se voit samedi.
+            On se voit samedi, So.
           </p>
         </div>
       </div>
@@ -97,7 +97,7 @@ const InvitationForm = () => {
             <p className="text-lg text-gray-600 leading-relaxed">
               Je vous ouvre mes portes pour une journée{" "}
               <span className="font-bold text-pink-600">
-                Shopping sans chichi
+                Shopping sans chichi avec So.
               </span>
               .
             </p>
