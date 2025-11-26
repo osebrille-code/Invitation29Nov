@@ -22,9 +22,9 @@ const InvitationForm = () => {
   const [status, setStatus] = useState("idle");
 
   const slots = [
-    "10h00 - 12h00 (Matinée Café & Crêpes)",
-    "14h00 - 16h00 (Shopping & Gourmandises)",
-    "16h00 - 18h00 (Afterwork & Surprises)",
+    "10h00 - 12h00",
+    "14h00 - 16h00",
+    "16h00 - 18h00",
   ];
 
   const handleSubmit = async (e) => {
@@ -70,7 +70,7 @@ const InvitationForm = () => {
             🥞 On garde les crêpes au chaud pour vous !
           </div>
           <p className="text-xs text-gray-400 mt-4">
-            Vous recevrez l'adresse par SMS la veille.
+            On se voit samedi.
           </p>
         </div>
       </div>
@@ -87,7 +87,7 @@ const InvitationForm = () => {
             Invitation VIP
           </h1>
           <p className="text-pink-400 font-medium relative z-10 tracking-wide">
-            Younique & Charlott'
+            Younique
           </p>
         </div>
 
@@ -97,14 +97,13 @@ const InvitationForm = () => {
             <p className="text-lg text-gray-600 leading-relaxed">
               Je vous ouvre mes portes pour une journée{" "}
               <span className="font-bold text-pink-600">
-                Shopping & Détente
+                Shopping sans chichi
               </span>
               .
             </p>
 
             <p className="text-sm text-gray-500">
-              Venez découvrir les coffrets de Noël et la nouvelle collection
-              lingerie.
+              Venez découvrir les coffrets Exclusifs Black Friday.
             </p>
 
             {/* BLOC MIS EN AVANT : CRÊPES & SURPRISES */}
@@ -115,7 +114,7 @@ const InvitationForm = () => {
               <ul className="text-sm space-y-1 text-gray-700">
                 <li className="flex items-center justify-center gap-2">
                   🎁{" "}
-                  <span className="font-medium">De nombreuses surprises</span>
+                  <span className="font-medium">Surprises et tirage au sort</span>
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   🥞{" "}
