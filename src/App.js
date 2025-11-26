@@ -95,7 +95,7 @@ const InvitationForm = () => {
           {/* Intro Text & Teasing */}
           <div className="mb-8 text-center space-y-4">
             <p className="text-lg text-gray-600 leading-relaxed">
-              Je vous ouvre mes portes pour une journée{" "}
+              Viens passer un moment à la maison{" "}
               <span className="font-bold text-pink-600">
                 Shopping sans chichi avec So.
               </span>
@@ -210,7 +210,7 @@ const InvitationForm = () => {
                 "Validation..."
               ) : (
                 <>
-                  Je réserve ma place <Gift size={18} />
+                  Je prévois de passer sur ce créneau <Gift size={18} />
                 </>
               )}
             </button>
