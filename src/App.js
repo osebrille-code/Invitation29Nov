@@ -6,8 +6,10 @@ import {
   MapPin,
   Gift,
   Sparkles,
+  User, // Ajout de l'icône User pour le champ Personnes
 } from "lucide-react";
 
+// Le composant principal de l'application
 const InvitationForm = () => {
   // URL du Webhook Make
   const MAKE_WEBHOOK_URL =
@@ -15,8 +17,10 @@ const InvitationForm = () => {
 
   const [formData, setFormData] = useState({
     nom: "",
-    telephone: "",
+    // SUPPRIMÉ : telephone n'est plus dans l'état
     creneau: "",
+    // NOUVEAU: Champ pour le nombre de personnes, initialisé à 1 (non nul)
+    nombrePersonnes: 1, 
   });
 
   const [status, setStatus] = useState("idle");
@@ -27,6 +31,24 @@ const InvitationForm = () => {
     "16h00 - 18h00",
   ];
 
+  // Gestion des changements de formulaire, y compris la conversion du nombre
+  const handleFormChange = (e) => {
+    const { name, value, type } = e.target;
+    let newValue = value;
+
+    if (name === 'nombrePersonnes' && type === 'number') {
+        // Assurez-vous que le nombre est un entier et est au moins 1
+        const parsedValue = parseInt(value, 10);
+        newValue = isNaN(parsedValue) || parsedValue < 1 ? 1 : parsedValue;
+    }
+
+    setFormData({ 
+      ...formData, 
+      [name]: newValue
+    });
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
@@ -35,6 +57,7 @@ const InvitationForm = () => {
       const response = await fetch(MAKE_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        // Le téléphone est retiré du body JSON
         body: JSON.stringify({
           ...formData,
           dateSoumission: new Date().toLocaleDateString("fr-FR"),
@@ -64,7 +87,7 @@ const InvitationForm = () => {
           </h2>
           <p className="text-gray-600">
             Merci {formData.nom}.<br />
-            Votre créneau est réservé.
+            Votre créneau pour {formData.nombrePersonnes} personne{formData.nombrePersonnes > 1 ? 's' : ''} est réservé.
           </p>
           <div className="mt-4 bg-yellow-50 p-3 rounded-lg text-sm text-yellow-800 border border-yellow-100">
             🥞 On garde les crêpes au chaud pour vous !
@@ -144,30 +167,38 @@ const InvitationForm = () => {
                 <input
                   required
                   type="text"
+                  name="nom" // Ajout de l'attribut name
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                   placeholder="Votre nom"
                   value={formData.nom}
-                  onChange={(e) =>
-                    setFormData({ ...formData, nom: e.target.value })
-                  }
+                  onChange={handleFormChange}
                 />
               </div>
-
+              
+              {/* NOUVEAU CHAMP: Nombre de Personnes */}
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">
-                  Téléphone
+                  Nombre de personnes (inclus vous)
                 </label>
-                <input
-                  required
-                  type="tel"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
-                  placeholder="Pour le SMS de rappel"
-                  value={formData.telephone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, telephone: e.target.value })
-                  }
-                />
+                <div className="relative flex items-center">
+                    <User size={18} className="absolute left-3 text-gray-400 pointer-events-none" />
+                    <input
+                      required
+                      type="number" // Type correct pour un nombre
+                      min="1" // Minimum non nul
+                      name="nombrePersonnes" // Nom de l'état correspondant
+                      className="w-full p-3 pl-10 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition appearance-none"
+                      placeholder="Toi + accompagnateur"
+                      value={formData.nombrePersonnes}
+                      onChange={handleFormChange}
+                    />
+                </div>
+                <p className="text-xs text-gray-500 mt-1 ml-1">
+                    *Ce champ est obligatoire et doit être au moins 1.
+                </p>
               </div>
+
+              {/* CHAMP TÉLÉPHONE RETIRÉ */}
             </div>
 
             <div>
@@ -203,17 +234,23 @@ const InvitationForm = () => {
 
             <button
               type="submit"
-              disabled={!formData.creneau || status === "loading"}
+              // La validation ne requiert plus "formData.telephone"
+              disabled={!formData.creneau || status === "loading" || !formData.nom}
               className="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-900 shadow-lg hover:shadow-xl transition transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
             >
               {status === "loading" ? (
                 "Validation..."
               ) : (
                 <>
-                  Je prévois de passer sur ce créneau <Gift size={18} />
+                  Je réserve ma place <Gift size={18} />
                 </>
               )}
             </button>
+            {status === 'error' && (
+                <p className="text-red-500 text-sm text-center">
+                    Une erreur est survenue lors de la soumission. Veuillez réessayer.
+                </p>
+            )}
           </form>
         </div>
       </div>
